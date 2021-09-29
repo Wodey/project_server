@@ -10,7 +10,7 @@ def hello_world():
         "tids": ["sgsg", "sf3400", "gfdb994", "234fdg"],
         "rating": 15
     }
-
+# Hello there
 #AUTHENTICATION ROUTES
 @app.route("/register", methods=["POST"])
 def register():
