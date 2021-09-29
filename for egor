@@ -1,0 +1,30 @@
+/login POST {
+  login
+} RESPOND if Success I will send a uuid(unique user id) if not succes i will send zero exception
+
+/get_task/<uuid> {
+  RESPOND 
+    provision
+    utid(unique task id)
+    if dont have tasks i will send zero
+}
+
+/deliver_task/<uuid> POST{
+    respond to compare with mine
+    if success return 1
+    if error return 0
+}
+
+/get_results/<uuid> GET {
+    privat_result
+    best_results
+}
+
+/admin/check_password POST {
+  password
+  o if error and 1 if success
+}
+/admin/add_task POST {
+  provision
+  right respond
+}
