@@ -18,10 +18,59 @@ class MainApplication:
 
     def __init__(self):
         def FrontPage():
+            def AdminPagePassword():
+                def AdminPage():
+
+                    self.ReturnButton.destroy()
+
+                    self.content.destroy()
+
+                    self.Admin.destroy()
+
+                    self.content = Frame(self.wrapper, bg='white')
+
+                    self.ExerciseText = Text(self.content, width = 60, height = 10, borderwidth = 2, relief="solid", font = ('Arial',20))
+
+                    self.content.pack(expand=1, ipady=100)
+                    self.ExerciseText.grid(column = 0, row = 1)
+
+
+                self.content.destroy()
+
+                self.Admin.destroy()
+
+                def Return():
+                    self.wrapper.destroy()
+                    self.JustADecoration.destroy()
+                    FrontPage()
+
+                self.content = Frame(self.wrapper, bg='white')
+
+                self.ReturnButton = Button(self.wrapper, bg='#fff', text='<< Return', font=('Times New Roman', 24), borderwidth=0, command = Return)
+
+                self.PasswordLabel = Label(self.content, bg='white', text='Are you sure you are an admin?',
+                                        font=('Times New Roman', 36))
+
+                self.password = Entry(self.content, borderwidth=2, relief="solid", width='40', justify='center',
+                                   font=('Arial', 23), bg='white', fg='#000')
+
+                self.submit = Button(self.content, borderwidth=2, relief="solid", width=20, height=1,
+                                     font=('Times New Roman', 16), text='Submit', bg='white', command=AdminPage)
+
+                self.ReturnButton.pack(anchor = NW, padx = 80, pady = 60)
+                self.content.pack(expand=1, ipady=100)
+                self.PasswordLabel.grid(column=0, row=1, columnspan=2, pady=100)
+                self.password.grid(column=0, row=2, padx=5)
+                self.submit.grid(column=1, row=2, padx=5)
+
+
             def ExercisePge():
                 def LeaderTAble():
 
                     self.content.destroy()
+
+                    self.Admin.destroy()
+
 
                     self.content = Frame(self.wrapper, width = 500, height = 600, bg='white', borderwidth = 2, relief="solid")
 
@@ -30,6 +79,9 @@ class MainApplication:
 
 
                 self.content.destroy()
+
+                self.Admin.destroy()
+
 
                 self.content = Frame(self.wrapper, bg = '#fff')
                 self.content.grid_columnconfigure(0, weight=1)
@@ -74,8 +126,9 @@ class MainApplication:
             def submit():
                 value = self.login.get()
                 cur.execute("INSERT INTO users VALUES (?, ?)", (value, 0))
-                if value and value != 'Your name...':
+                if value and value != 'You...':
                     ExercisePge()
+
 
             self.root = MainApplication.win
             self.root.iconbitmap('icon.ico')
@@ -96,12 +149,15 @@ class MainApplication:
 
             self.submit = Button(self.content, borderwidth = 2, relief="solid", width = 20, height = 1, font = ('Times New Roman', 16), text = 'Submit', bg = 'white', command=submit)
 
+            self.Admin = Button(self.wrapper, bg = '#fff', text = 'I am an admin', font = ('Times New Roman', 18, 'underline'),  borderwidth = 0, command = AdminPagePassword)
+
             self.JustADecoration.pack()
             self.wrapper.pack(expand = 1, fill = BOTH)
             self.content.pack(expand=1, ipady=100)
             self.FrontLabel.grid(column = 0, row = 0, columnspan = 2, pady = 100)
             self.login.grid(column = 0, row = 1, padx = 5)
             self.submit.grid(column = 1, row = 1, padx = 5)
+            self.Admin.pack(anchor = N, pady = 40)
 
         FrontPage()
 
