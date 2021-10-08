@@ -1,6 +1,30 @@
 from flask import Flask
+from hashlib import md5
+import redis
+r_user = redis.StrictRedis(
+    host='127.0.0.1',
+    port=5000,
+    password='lgqXU5Dwxs2j3sVMqvl207fWoTQclhVX',
+    charset="utf-8",
+    decode_responses=True
+)
+r_task = redis.StrictRedis(
+    host='127.0.0.1',
+    port=5000,
+    password='wYjpWimMui3JEsbJcXSxVl8q9mtEsEly',
+    charset="utf-8",
+    decode_responses=True
+)
+r_results=redis.StrictRedis(
+    host='127.0.0.1',
+    port=5000,
+    password='agdKAJHSJKhdhJKAK31ljDAlasQqefsn',
+    charset="utf-8",
+    decode_responses=True
+)
 
 app = Flask(__name__)
+
 
 @app.route("/")
 def hello_world():
@@ -18,8 +42,13 @@ def register():
 
 @app.route("/login", methods=["POST"])
 def login():
-    #add code later
-    return 0
+    try:
+        if r_user.get(login)==None:
+            r_user.set(login,md5(login.encode()).hexdigest(),300)#300 sec
+        else:
+            return r_user.get(login)
+    except:
+        return 0
 
 @app.route("/unauth")
 def unauth():
@@ -29,8 +58,13 @@ def unauth():
 #TASK ROUTES
 @app.route("/get_task/<uid>")
 def get_task():
-    #add code later
-    return 0
+    try:
+        if r_task.get(uuid)==None:
+        r_task.set(uuid,md5(uuid.encode()).hexdigest())
+    else:
+        return r_task.get(uuid)
+    except:
+        return 0
 
 @app.route("/skip_task/<uid>/<tid>")
 def skip_task():
@@ -50,8 +84,10 @@ def deliver_task():
 #RESULTS ROUTES
 @app.route("/get_results")
 def get_results():
-    #add code later
-    return 0
+    try:
+        return r_results.get(f"best_result_{uuid}")
+    except:
+        return 0
 
 #ADMIN ROUTES
 @app.route("/admin/add_task", methods=["POST"])
