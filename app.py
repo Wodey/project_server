@@ -1,5 +1,5 @@
 import os
-
+from datetime import date
 from flask import Flask
 from hashlib import md5
 from pymongo import MongoClient
@@ -11,7 +11,10 @@ load_dotenv()
 
 client = MongoClient(os.getenv('URI'))
 
+today = date.today()
+d1 = today.strftime("%d/%m/%Y")
 
+db = client.test_database
 @app.route("/")
 def hello_world():
     return {
@@ -35,9 +38,14 @@ def unauth():
     return 0
 
 #TASK ROUTES
-@app.route("/get_task/<uid>")
-def get_task():
-     return 0
+@app.route("/get_tasks/<uid>")
+def get_task(uid):
+    try:
+        collection = db[d1]
+        print(collection.find_one({uid: uid}))
+        return "1"
+    except:
+        return "0"
 
 @app.route("/skip_task/<uid>/<tid>")
 def skip_task():
