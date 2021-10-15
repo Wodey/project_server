@@ -1,20 +1,13 @@
 import os
 from datetime import date
-from flask import Flask
+from db import get_db
+from flask import Flask, request
 from hashlib import md5
-from pymongo import MongoClient
-from dotenv import load_dotenv
-
 app = Flask(__name__)
 
-load_dotenv()
 
-client = MongoClient(os.getenv('URI'))
+db = get_db()
 
-today = date.today()
-d1 = today.strftime("%d/%m/%Y")
-
-db = client.test_database
 @app.route("/")
 def hello_world():
     return {
@@ -40,12 +33,11 @@ def unauth():
 #TASK ROUTES
 @app.route("/get_tasks/<uid>")
 def get_task(uid):
-    try:
-        collection = db[d1]
-        print(collection.find_one({uid: uid}))
+        collection = db.userss
+        collection.insert_one({'db': 'sdf'})
+        cursor = collection.find({})
+
         return "1"
-    except:
-        return "0"
 
 @app.route("/skip_task/<uid>/<tid>")
 def skip_task():
@@ -70,8 +62,11 @@ def get_results():
 #ADMIN ROUTES
 @app.route("/admin/add_task", methods=["POST"])
 def add_task():
-    #add code later
-    return 0
+    try:
+        data = request.get_json()
+        return "1"
+    except:
+        return "0"
 
 @app.route("/admin/delete_task/<tid>")
 def delete_task():
