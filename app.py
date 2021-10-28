@@ -19,25 +19,26 @@ def hello_world():
 #AUTHENTICATION ROUTES
 @app.route("/register", methods=["POST"])
 def register():
-    #add code later
-    return 0
-
-@app.route("/login", methods=["POST"])
-def login():
-    return 0
-@app.route("/unauth")
-def unauth():
-    #add code later
-    return 0
+    data = request.get_json()
+    users = db['users']
+    tasks = db['tasks'].find()
+    if users.find_one({"username": data["username"]}):
+        return "1"
+    post = users.insert_one({"username": data["username"], "uncompleted_tasks": [k._id for k in tasks], "score": 0})
+    return {
+        "uid": str(post.inserted_id)
+    }
 
 #TASK ROUTES
 @app.route("/get_tasks/<uid>")
 def get_task(uid):
-        collection = db['userss']
-        print('hey')
-        print(collection)
-        collection.insert_one({'db': 'sdf'})
-        return "1"
+        tasks = db['tasks']
+        users = db['users']
+        items = tuple([k for k in tasks.find()])
+        user = users.find_one({"uid": uid})
+        return {
+            "body": items
+        }
 
 @app.route("/skip_task/<uid>/<tid>")
 def skip_task():
