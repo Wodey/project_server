@@ -33,10 +33,10 @@ def unauth():
 #TASK ROUTES
 @app.route("/get_tasks/<uid>")
 def get_task(uid):
-        collection = db.userss
+        collection = db['userss']
+        print('hey')
+        print(collection)
         collection.insert_one({'db': 'sdf'})
-        cursor = collection.find({})
-
         return "1"
 
 @app.route("/skip_task/<uid>/<tid>")
