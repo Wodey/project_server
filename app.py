@@ -56,9 +56,21 @@ def deliver_task(uid):
     return "1"
 
 #RESULTS ROUTES
-@app.route("/get_results")
-def get_results():
-    return 0
+@app.route("/get_result/<uid>")
+def get_results(uid):
+    users = db["users"].find().sort("score", 1)
+    counter = 0
+    top = []
+    for k in users:
+        if(str(k["_id"]) == uid):
+            user = {"username": k["username"], "score": k["score"]}
+        if(counter < 5):
+            top.append({"username": k["username"], "score": k["score"]})
+        counter += 1
+    return {
+        "top": top,
+        "user": user
+    }
 
 #ADMIN ROUTES
 @app.route("/admin/add_task", methods=["POST"])
